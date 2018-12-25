@@ -26,7 +26,7 @@ Attualmente i file sono:
 |6    |Catene di Markov    |Tantari    |chapter |                                           |
 |5    |Meccanica Statistica|Tantari    |chapter |                                           |
 |A    |Teoria della misura |Grotto     |appendix|@marco-venuti, @Konnoi5                    |
-|B    |Spazi di Hilbert    |Bindini    |appendix@alepiazza, @marco-venuti                   |
+|B    |Spazi di Hilbert    |Bindini    |appendix|@alepiazza, @marco-venuti                  |
 
 
 ### Come scrivere una lezione
