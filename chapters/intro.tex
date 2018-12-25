@@ -1,0 +1,230 @@
+%
+% \section{Lezione del 10/10/2018 [Marmi]
+%
+
+\section{Che cos'è un sistema dinamico?}
+\begin{definition}[gruppo]
+	Un gruppo è una coppia $ \mathcal{G} \coloneqq (G, \star) $ dove $ G $ è un insieme e $ {\star \colon G \times G \to G} $ è un'operazione binaria che gode delle seguenti proprietà
+	\begin{enumerate}[label=(\roman*)]
+		\item \emph{associativa}: $ \forall g_1, g_2, g_3 \in G, \ g_1 \star (g_2 \star g_3) = (g_1 \star g_2) \star g_3 $;
+		\item \emph{elemento neutro sinistro}: $  \exists e \in G : \forall g \in G, \ g \star e = g $;
+		\item \emph{inverso sinistro}: $ \forall g \in G, \exists g^{-1} \in G : g \star g^{-1} = e $.
+	\end{enumerate}
+	A partire da queste si mostra facilmente che l'elemento neutro destro è anche elemento neutro sinistro, l'inverso destro è anche inverso sinistro, che l'elemento neutro e l'inverso sono unici. \\
+	Se non ci sono ambiguità circa l'operazione definita su $ G $ indicheremo più semplicemente il gruppo $ \mathcal{G} $ facendo riferimento al solo insieme $ G $. 
+\end{definition}
+
+\begin{definition}[sistema dinamico] \label{def:sistema-dinamico}
+	Un sistema dinamico è una terna $ (\mathcal{G}, \mathcal{X}, \Phi) $ dove $ {\mathcal{G} \coloneqq (G, \star)} $ è un (semi-)gruppo\footnote{Per \emph{semigruppo} si intende una coppia $ (G,\star) $ dove $ \star $ è associativa.}, $ \mathcal{X} $ è uno spazio, cioè un insieme $ X $ dotato di una qualche struttura, e 
+	\begin{align*}
+		\Phi \colon G \times X & \to X \\
+		(g, x) & \mapsto \Phi(g, x) = \Phi_g(x)
+	\end{align*}
+	è un'applicazione tale che
+	\begin{enumerate}[label=(\roman*)]
+		\item $ \forall x \in X, \ \Phi_e(x) = x $ dove $ e $ è l'elemento neutro di $ G $, cioè $ \Phi_e = \Id_X $;
+		\item $ \forall g_1, g_2 \in G, \forall x \in X, \ \Phi_{(g_1 \star g_2)}(x) = (\Phi_{g1} \circ \Phi_{g_2})(x) $ cioè $ \Phi_{(g_1 \star g_2)} = \Phi_{g1} \circ \Phi_{g_2} $.
+	\end{enumerate}
+	Più brevemente diciamo che un sistema dinamico è l'\emph{azione} di un gruppo $ G $ su uno spazio $ X $ definita da una mappa $ \Phi $. 
+\end{definition}
+
+Nella maggior parte dei casi useremo come gruppo insiemi numerici $ \N $, $ \Z $ e $ \R $ con le usuali operazioni. Nei primi due casi parleremo di sistemi a \emph{tempo discreto} mentre nell'ultimo di sistemi a \emph{tempo continuo}. Come spazio $ \mathcal{X} $ useremo spesso uno \emph{spazio metrico compatto} (e.g. la sfera $ \S^d $, il toro $ \T^d $ \footnote{$ \T^d \coloneqq \faktor{\R^d}{\Z^d} $.} o un intervallo chiuso $ [a, b] $), uno \emph{spazio di misura} o gli insiemi $ \R^d $ e $ \C $ con le usuali strutture. Se non ci sono ambiguità circa la struttura definita su $ X $ indicheremo più semplicemente lo spazio $ \mathcal{X} $ facendo rifermento al solo insieme $ X $. \\
+
+Per quanto riguarda la mappa $ \Phi $ osserviamo che per definizione $ \Phi_g \in \End{(X)} $ ovvero è un \emph{endomorfismo} su $ X $. Tuttavia spesso penseremo a $ \Phi_g \in \Aut{(X)} $ ovvero un \emph{automorfismo} cioè un endomorfismo invertibile. \\
+
+Una tipo di sistema dinamico a tempo discreto di uso frequente è l'iterazione di una mappa da $ X $ in sé. Data $ f \in \End{(X)} $, per ogni $ n \in \N $ poniamo $ f^n \coloneqq f \circ \cdots \circ f $ ($ f $ composta $ n $ volte) con la convenzione che $ f^1 = f $ e $ f^0 = \Id_X $. Se consideriamo $ \N $ con l'operazione di addizione, l'applicazione $ \Phi^f $ data da $ \Phi_n^f(x) \coloneqq f^n(x) $ definisce un sistema dinamico. \\
+Se prendiamo $ f \in \Aut{(X)} $ possiamo considerare la stessa costruzione usando come gruppo $ \Z $ e definendo $ f^{-n} $ come l'inversa di $ f^n $. \\
+Nel seguito quando diremo che $ f \colon X \to X $ è un sistema dinamico sottintenderemo la costruzione appena data nell'esempio seguente a meno di ulteriori precisazioni. 
+
+
+\begin{example}
+	Partendo dalla costruzione appena data possiamo prendere $ X = [0, 1] $ e per $ \alpha \in \R $ la funzione $ f(x) \coloneqq x + \alpha \pmod{1} $. Osserviamo che essendo $ f $ invertibile possiamo definire come sopra l'applicazione $ \Phi $ su $ \Z $. Il sistema così definito è un prototipo di \emph{sistema periodico} se $ \alpha \in \Q $ e di \emph{sistema quasi-periodico} se $ \alpha \notin \Q $. 
+	\iffigureon
+	\begin{figure}[h!]
+		\centering
+		\input{img/sd1.tikz}
+		\caption{\textcolor{red}{Completare questo schifo.}}
+	\end{figure}
+	\fi
+\end{example}
+
+Prendiamo come gruppo $ \R $ o $ [0, +\infty) $. In tale caso data l'applicazione $ \Phi_t(x) = \Phi(t, x) $ prende il nome di \emph{flusso} o \emph{semi-flusso} rispettivamente. \\
+
+Un esempio di sistema dinamico a tempo continuo è dato da un'equazione differenziale ordinaria (ODE) del primo ordine\footnote{Di seguito considereremo quasi solo ODE del primo ordine in quanto equazioni differenziali di ordine superiore possono essere ricondotte a questa con il solito cambio di variabile a sistemi di ODE del primo ordine.} autonoma
+\begin{equation} \label{eqn:ode-I-ordine}
+	\begin{cases}
+		\dot{x} = v(x) \\
+		x(0) = x_0
+	\end{cases}
+\end{equation} 
+dove $ x, x_0 \in \R^n $ e $ v \colon \R^n \to \R^n $ è un campo vettoriale. Se supponiamo che $ v $ sia di classe $ \mathcal{C}^1 $ allora abbiamo esistenza e unicità della soluzione \textcolor{red}{(e dipendenza continua dai parametri iniziali ??)}, cioè esiste $ \tau > 0 $ e un'unica funzione $ \phi \colon [0, \tau) \to \R^n $ tale che $ \phi(0) = x_0 $ e $ \phi'(t) = v(\phi(0)) $ per ogni $ t \in [0, \tau) $. \\
+Se supponiamo per esempio che $ v $ sia un'applicazione lineare $ v(x) \coloneqq A x $ con $ A \in \mathrm{Mat}_{n \times n}(\R) $ allora abbiamo che la soluzione è prolungabile a tutto l'asse reale e introducendo la nozione di esponenziale di una matrice\footnote{%
+	Data $ A \in \mathrm{Mat}_{n \times n}(\R) $ si pone 
+	\[ \exp(A) \coloneqq \sum_{k = 0}^{+\infty} \frac{A^k}{k!}. \] 
+}
+si può scrivere nella forma 
+\[ \phi(t) = \exp{\left(t \, A\right)} \, x_0. \]
+
+\begin{definition}[Orbita e spazio delle orbite]
+	Data $ f \in \Aut{(X)} $ e $ \Phi^f \colon \Z \times X \to X $ definiamo orbita di $ x \in X $ come 
+	\[
+	\mathcal{O}^f(x) \coloneqq \{f^n(x) : n \in \Z\}.
+	\]
+	Le orbite definiscono una naturale relazione di equivalenza $ x \sim y \iff \exists n \in \Z : y = f^n(x) \iff y \in \mathcal{O}^f(x) \iff x \in \mathcal{O}^f(y) $. Chiamiamo lo spazio quoziente $ \faktor{X}{\sim} $ spazio delle orbite. \textcolor{red}{Topologia quoziente?}
+\end{definition}
+
+\begin{definition}[orbita pre-periodica e periodica] 
+    Sia $f\colon X \to X$ un sistema dinamico. Un'orbita $\mathcal{O}^f(x)$ si dice pre-periodica se contiene un numero finito di elementi. Se inoltre $ f $ è invertibile l'orbita si dice periodica e la sua cardinalità si dice periodo. \\
+    Infine, se $f$ non è invertibile, possono esistere punti $ x $ (che costituiscono il pre-periodo) tali che $ \forall n > 0\ f^n (x) \neq x $.
+\end{definition}
+
+\begin{example}[Congettura di Collatz]
+    Si consideri il sistema dinamico $f \colon \N \to \N$:
+    \[
+        f(n) \coloneqq
+        \begin{cases}
+            n/2  & \text{se $ n $ è pari}    \\
+            3n+1 & \text{se $ n $ è dispari}
+        \end{cases}
+    \]
+    La congettura\footnote{È attualmente un problema aperto.} di Collatz asserisce che tutti gli $n \in \N$ sono pre-periodici e che l'unico ciclo è $ 1 \to 4 \to 2 \to 1 $.
+\end{example}
+
+\section{Flussi vs tempo discreto: il pendolo semplice e la mappa standard}
+Solitamente siamo interessati al comportamento asintotico dell'azione di $ \Phi $ e pertanto più essere utile rendere discreto un flusso continuo. Dato un flusso $ \Phi_t $ con $ t \in \R $ possiamo considerare la funzione $ f = \Phi_{\tau} $ con $ \tau > 0 $ e la mappa $ \Phi_n^f \coloneqq f^{n/\tau} $ con $ n \in \tau \Z $ che è un sistema dinamico a tempo discreto. Tuttavia bisogna osservare che la \emph{discretizzazione} dell'equazione differenziale che definisce un sistema dinamico continuo non è un mero artificio algebrico e il sistema a tempo discreto ottenuto può differire in modo significativo dal \emph{fotografare} un sistema continuo a tempi discreti. 
+
+\begin{example}[pendolo semplice]
+	Consideriamo il sistema dinamico descritto dall'equazione differenziale del pendolo semplice ($ g = 1 $)
+	\[
+		\ddot{x} = \sin{x}
+	\]
+	che può essere portato nella forma della \eqref{eqn:ode-I-ordine} ponendo $ y = \dot{x} $ da cui 
+	\[
+		\begin{cases}
+			\dot{x} = y \\
+			\dot{y} = \sin{x}
+		\end{cases}
+		\quad \rightarrow \quad
+		\begin{pmatrix}
+			\dot{x} \\ \dot{y}
+		\end{pmatrix}
+		=
+		\begin{pmatrix}
+			y \\ \sin{x}
+		\end{pmatrix}
+	\]
+	dove $ v(x, y) = (y, \sin{x}) $. Nel linguaggio della Definizione \ref{def:sistema-dinamico}, $ G \coloneqq \R $, $ X \coloneqq \S^1 \times \R  $ e $ {\Phi(t, (x, y)) \coloneqq (\phi(t), \phi'(t))} $ dove $ \phi \colon \R \to \R $ è una soluzione dell'equazione differenziale. \\
+	\textcolor{red}{$ E = \frac{1}{2}y^2 + \cos{x} $ integrale primo del moto e spazio  delle fasi?} \\
+	A fissato \emph{step} $ \mu $ trasformiamo l'equazione differenziale del secondo ordine in \footnote{%
+		\[
+			\ddot{x}(t) \approx \frac{\dot{x}(t) - \dot{x}(t - \mu)}{\mu} \approx \frac{\frac{x(t + \mu) - x(t)}{\mu} - \frac{x(t) - x(t - \mu)}{\mu}}{\mu} = \frac{x(t + \mu) - 2x(t) + x(t - \mu)}{\mu^2}
+		\]
+	}
+	\[
+		x(t + \mu) - 2 x(t) + x(t - \mu) = \mu^2 \sin(x(t)).
+	\]
+	Posto ora $ \epsilon = \mu^2 $, $ x = x(t) $, $ x' = x(t + \mu) $, $ y = x(t) - x(t - \mu) $ e $ y' = x(t + \mu) - x(t) $ otteniamo il seguente sistema 
+	\[
+		\begin{cases}
+			x' = x + y' \\
+			y' = \epsilon \sin{x} + y 
+		\end{cases}
+	\]
+	che è la \emph{mappa standard}. \\
+	\textcolor{red}{Commenti...}
+	
+	\iffigureon
+	\begin{figure}
+		\centering
+		\includegraphics{img/standard-map/fase-pendolo}
+		\caption{Ritratto di fase del pendolo semplice}
+		\label{fig:pendolo-fase}
+	\end{figure}
+	
+	\begin{figure}
+		\centering
+		\subfloat{%
+			\includegraphics[width=0.5\textwidth]{img/standard-map/sm0}%
+		} 
+		\subfloat{%
+			\includegraphics[width=0.5\textwidth]{img/standard-map/sm1}%
+		} \hfill
+		\subfloat{%
+			\includegraphics[width=0.5\textwidth]{img/standard-map/sm2}%
+		} 
+		\subfloat{%
+			\includegraphics[width=0.5\textwidth]{img/standard-map/sm3}%
+		} \hfill
+		\subfloat{%
+			\includegraphics[width=0.5\textwidth]{img/standard-map/sm4}%
+		} 
+		\subfloat{%
+			\includegraphics[width=0.5\textwidth]{img/standard-map/sm5}%
+		} \hfill
+		\caption{Equazione del pendolo discretizzazione per diversi valori di $ \epsilon $}
+		\label{fig:pendolo-ode-num}
+	\end{figure}
+	\fi
+\end{example}
+
+%
+% \section{Lezione del 16/10/2018 [Marmi]}
+%
+
+\section{Coniugazione \textcolor{red}{e misure invarianti}}
+\begin{definition}[Sistemi dinamici coniugati]
+    Siano $f\colon X \to X$ e $g\colon Y \to Y$ due sistemi dinamici. Questi si dicono coniugati se esiste $h \colon X \to Y$ invertibile tale che $h \circ f = g \circ h$, cioè tale da far commutare il seguente diagramma:
+    \begin{center}
+        \begin{tikzcd}
+            X \arrow[r, "f"] \arrow[d, "h"]  & X \arrow[d, "h"] \\
+            Y \arrow[r, "g"] & Y
+        \end{tikzcd}
+    \end{center}
+    Se $h$ è solamente surgettiva si dice che $g$ è un \emph{fattore} di $f$ oppure che $f$ è un'\emph{estensione} di $g$. Se invece $h$ è solo iniettiva allora si dice che $f$ è un \emph{sottosistema} di $g$.
+\end{definition}
+
+\begin{example} \label{ex:Ulam_Mandelbrot}
+    Si considerino i seguenti sistemi dinamici $ \C \to \C$:
+    \[ Q_\lambda(z) \coloneqq \lambda z (1-z) \]
+    \[ P_c(z) \coloneqq z^2 + c \qquad \text{con } c = - \frac{\lambda^2}{4} +  \frac{\lambda}{2}. \]
+    Le funzioni $ Q_\lambda $ sono dette \emph{trasformazioni di Ulam-Von Neumann}, mentre $P_c$ è la funzione che genera l'\emph{insieme di Mandelbrot}.
+    I due sistemi risultano coniugati attraverso la funzione
+    \[ h_\lambda(z) = -\lambda z + \frac{\lambda}{2}\;. \]
+    Infatti si verifica che $ h\circ Q_\lambda = P_c \circ h $.
+\end{example}
+
+\begin{example} \label{ex:Ulam_tenda}
+    Sia $ Q_4 \colon [0,1] \to [0,1] $ come definita nell'esempio \ref{ex:Ulam_Mandelbrot} e sia $ T\colon [0,1] \to [0,1] $ la mappa a tenda:
+    \[
+    T(x) \coloneqq
+    \begin{cases}
+    2x   & \text{se } 0 \leq x \leq 1/2 \\
+    2-2x & \text{se } 1/2 \leq x \leq 1
+    \end{cases}.
+    \]
+    Allora i due sistemi sono coniugati tramite $ h(x) = \sin^2\left(\frac{\pi x}{2}\right) $, cioè si ha $ Q_4\circ h = h\circ T $.
+    Inoltre, poiché $ T $ conserva la misura di Lebesgue, usando la \eqref{eq:pushforward-misure} si ottiene che $ Q_4 $ conserva la misura:
+    \[ \dif{h_\sharp \lambda}(x) = \frac{\dif x}{\pi\sqrt{x(1-x)}}\; . \]
+    
+    \iffigureon
+    \begin{figure}
+        \begin{center}
+            \subfloat[Mappa a tenda]
+            { \input{img/ulam-tenda/left.tikz} }
+            \subfloat[Trasformazione $ Q_4 $]
+            { \input{img/ulam-tenda/right.tikz} }
+        \end{center}
+        \caption{funzione dell'Esempio \ref{ex:Ulam_tenda}.}
+    \end{figure}
+    \fi
+\end{example}
+
+\begin{example}
+    Sia $ Q_4\colon (0,1)\to(0,1) $, $ S\colon \R \to \R $ definita come
+    \[ S(y) \coloneqq \log\left(\frac{4 e^y}{(1-e^y)^2}\right) \]
+    e $ h\colon (0,1)\to\R $:
+    \[ h(x) \coloneqq \operatorname{logit}(x) \coloneqq \log\left(\frac{x}{1-x}\right) \]
+    Allora $ h\circ Q_4 = S \circ h $ e S conserva la misura:
+    \[ \dif\mu(y) = \frac{\dif y}{\pi\left( e^{y/2} - e^{-y/2} \right) } \; . \]
+\end{example}
+

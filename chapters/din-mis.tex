@@ -1,0 +1,302 @@
+%
+% \section{Lezione del 14/11/2018 [Marmi]}
+%
+
+\section{Sistemi dinamici su spazi di \textcolor{red}{misura/probabilità}}
+\begin{definition}[sistema dinamico misurabile]
+    Un sistema dinamico misurabile è una quaterna $ (X, \mathcal{A}, \mu, f) $ dove
+    \begin{enumerate}[label=(\roman*)]
+        \item $ (X, \mathcal{A}, \mu) $ è uno spazio di probabilità, cioè un insieme $ X $ (spazio delle fasi) con una $ \sigma $-algebra $ \mathcal{A} $ e una misura $ \mu $ tale che $ \mu(X) = 1 $;
+        \item $ f \colon X \to X $ è una funzione misurabile e tale che $ \mu $ sia $ f $-invariante, cioè tale che $ \forall A \in \mathcal{A}, \ f_{\sharp}\mu (A) = \mu(f^{-1}(A)) = \mu(A) $;
+        \item la dinamica è data dall'iterazione di $ f $.
+    \end{enumerate}
+\end{definition}
+
+\textcolor{red}{Ho riscritto un po' la definizione seguente per renderla più simmetrica, controllare che sia equivalente a quella data a lezione}
+
+\begin{definition}[isomorfismo di sistemi dinamici misurabili]
+    Due sistemi dinamici misurabili $ (X, \mathcal{A}, \mu, f) $ e $ (Y, \mathcal{B}, \nu, g) $ si dicono isomorfi se esistono una funzione $ h \colon X \to Y $ e una funzione $ k \colon Y \to X $ che siano una l'inversa dell'altra a meno di un insieme di misura nulla e facciano commutare il seguente diagramma:
+    \begin{center}
+        \begin{tikzcd}
+        X \arrow[r, "f"] \arrow[d, shift right, "h" left] & X \arrow[d, shift left, "h" right]\\
+        Y \arrow[r, "g" below] \arrow[u, shift right, "k" right] & Y \arrow[u, shift left, "k" left]
+        \end{tikzcd}
+    \end{center}
+    Più precisamente chiediamo che $ \exists X' \subseteq X : \mu(X \setminus X') = 0 $, $ \exists Y' \subseteq Y : \nu(Y \setminus Y') = 0 $ e $ \exists h \colon X' \to Y' $ e $ k \colon Y' \to X' $ tali che
+    \begin{enumerate}[label=(\roman*)]
+        \item $ h \circ k = \Id_{Y'} $;
+        \item $ k \circ h = \Id_{X'} $;
+        \item $ h $ faccia commutare il diagramma di sopra, cioè $ g \circ h = h \circ f $ $ \mu $-q.o. oppure $ k $ faccia commutare il diagramma, cioè $ f \circ k = k \circ g $ $ \nu $-q.o.;
+        \item $ h $ sia misurabile, cioè $ \forall B \in \mathcal{B}, \ h^{-1}(B) \in \mathcal{A} $;
+        \item $ \nu $ sia la misura immagine di $ \mu $ secondo $ h $, cioè $ {\forall B \in \mathcal{B}, \ h_\sharp \mu(B) = \mu(h^{-1}(B)) = \nu(B)} $;
+        \item $ k $ sia misurabile, cioè $ \forall A \in \mathcal{A}, \ h^{-1}(A) \in \mathcal{B} $;
+        \item $ \mu $ sia la misura immagine di $ \nu $ secondo $ k $, cioè $ \forall A \in \mathcal{A}, \ k_\sharp \nu(A) = \nu(k^{-1}(A)) = \mu(A) $.
+    \end{enumerate}
+\end{definition}
+
+\begin{oss}
+    Le nozioni di dinamica misurabile e teoria ergodica che andremo ad enunciare sono invarianti per isomorfismo di sistemi dinamici.
+\end{oss}
+
+In Tabella \ref{tab:ergodica-vs-probabilia}, si riporta un confronto tra il linguaggio probabilistico e quello usato in teoria ergodica.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{cXX}
+        & \textsc{Teoria ergodica} & \textsc{Probabilità} \\ \toprule
+        $ X $ & spazio delle fasi & spazio dei campioni \\
+        $ \mathcal{A} $ & $ \sigma $-algebra dei misurabili & collezione degli eventi \\
+        $ \mu $ & misura $ \mu(A) $ & probabilità $ \PP{(x \in A)} $ \\
+        $ \varphi \colon X \to \R $ & osservabile & variabile aleatoria \\
+        $ \varphi_n \coloneqq (\varphi \circ f^{n})_{n \in \N} $ & valore di un'osservabile lungo un'orbita & processo stocastico con distribuzione  $ \PP{(\varphi_1 \in A_1, \ldots, \varphi_k \in A_k)} =  \mu\left(\bigcap_{j = 1}^{k} \{x \in X : \varphi(f^{j}(x)) \in A_j\}\right) $ \\
+        & $ f $-invarianza di $ \mu $ & processo stazionario \\ \bottomrule
+    \end{tabularx}
+    \caption{Teoria ergodica e probabilità}
+    \label{tab:ergodica-vs-probabilia}
+\end{table}
+
+\begin{exercise}
+    Sia $ f \colon [0, 1] \to [0, 1] $ monotona e $ C^1 $ a tratti (anche numerabili). Su $ [0, 1] $ è posta una misura con densità $ \rho(x) $, cioè tale che $ \mu(A) \coloneqq \int_A \rho(x) \dif{x} $ dove $ \dif{x} $ è la misura di Lebesgue. Mostrare che $ \mu $ è $ f $-invariante se e solo se
+    \[
+        \sum_{x \in f^{-1}(\{y\})} \frac{\rho(x)}{\abs{f'(x)}} = \rho(y).
+    \]
+\end{exercise}
+
+\begin{example}
+    I sistemi dinamici nell'esempio \ref{ex:Ulam_tenda} sono isomorfi tramite la mappa $ h $ ivi definita.
+\end{example}
+
+\begin{exercise}[mappa di Gauss]
+    Sia $ G\colon [0,1]\to [0,1] $ definita come $ G(x) \coloneqq \left\{ \frac{1}{x} \right\} $. Verificare che $ G $ conserva la misura con densità:
+    \[ \dif{\mu}(x) = \frac{\dif x}{(\log 2)(1+x)} \, . \]
+\end{exercise}
+
+\begin{exercise}[mappa di Farey]
+    Sia $ F\colon (0,1)\to (0,1) $ la mappa
+    \[
+        F(x) \coloneqq
+        \begin{cases}
+            \frac{x}{1-x}   & \text{se } 0 < x \leq \frac{1}{2} \\
+            \frac{1}{x} - 1 & \text{se } \frac{1}{2} < x < 1
+        \end{cases}
+    \]
+    Essa conserva la misura infinita $ \dif{\mu}(x) = \frac{\dif{x}}{x} $.
+\end{exercise}
+
+\begin{exercise}
+    Sia $ f\colon \R\to\R $ definita come $ f(x) \coloneqq \frac{1}{2} \left( x - \frac{1}{x} \right) $. Questa conserva la misura $ \dif{\mu}(x) = \frac{\dif{x}}{\pi(1+x^2)} $.
+\end{exercise}
+
+Il seguente teorema definisce un collegamento tra un sistema dinamico topologico e un sistema dinamico misurabile e stabilisce che il sistema dinamico dato dall'iterazione di $ f $ su uno spazio metrico compatto ammette almeno una misura invariante. 
+
+\begin{thm}[Krylov–Bogolyubov]
+    Sia $ (X, d, f) $ un sistema dinamico topologico. Allora esiste almeno una misura $ \mu $ di probabilità sui boreliani di $ X $ che sia $ f $-invariante.
+\end{thm}
+
+\textcolor{red}{Qualche commento su Poincaré...}
+
+\begin{thm}[di ricorrenza di Poincaré]
+    Sia $ (X, \mathcal{A}, \mu, f) $ un sistema dinamico misurabile. Allora $ \forall A \in \mathcal{A} $, per $ \mu $-q.o. $ x \in A $, $ x $ è ricorrente in $ A $. 
+\end{thm}
+\begin{proof}
+    Sia $ A_r \coloneqq \{x \in A : x \text{ è ricorrente in } A\} \subseteq A $. Osserviamo che possiamo scrivere
+    \[
+    A_r = A \setminus \bigcup_{n \geq 1} B_n
+    \]
+    dove $ B_n $ è l'insieme degli $ x \in A $ che non visitano più $ A $ dopo il tempo $ n $ o più formalmente  
+    \[
+    B_n \coloneqq A \setminus \bigcup_{j \geq n} f^{-j}(A).
+    \]
+    Essendo $ A_r $ differenza e unione numerabile di insiemi misurabili, anche $ A_r $ misurabile. Osservando che $ A \subseteq \bigcup_{j \geq 0} f^{-j}(A) $ essendo $ f^{0}(A) = A $ otteniamo che 
+    \[
+    B_n \subseteq \bigcup_{j \geq 0} f^{-j}(A) \setminus  \bigcup_{j \geq n} f^{-j}(A).
+    \]
+    Definendo allora $ \overline{A} \coloneqq \bigcup_{j \geq 0} f^{-j}(A) $ abbiamo che 
+    \[
+    \mu(B_n) \leq \mu(\overline{A}) - \mu\left(\textstyle{\bigcup_{j \geq n}} f^{-j}(A)\right) = \mu(\overline{A}) - \mu\left(f^{-n}\left(\textstyle{\bigcup_{j \geq 0}} f^{-j}(A)\right)\right) = \mu(\overline{A}) - \mu(f^{-n}(\overline{A})).
+    \]
+    Ma $ \mu $ è $ f $-invariate quindi
+    \[
+    \mu(B_n) \leq \mu(\overline{A}) - f_{\sharp}\mu(\overline{A}) = \mu(\overline{A}) - \mu(\overline{A}) = 0.
+    \]
+    \textcolor{red}{Scrivendo i $ B_n $ come unione disgiunta} concludiamo che 
+    \[
+    \mu(A_r) = \mu(A) - \mu\left(\textstyle{\bigcup_{n \geq 1}} B_n\right) = \mu(A)
+    \]
+    cioè $ \mu $-q.o. $ x \in A $ è ricorrente in $ A $.
+\end{proof}
+
+\section{Ergodicità}
+
+\begin{definition}[frequenze di visita]
+    Sia $ (X, \mathcal{A}, \mu, f) $ un sistema dinamico misurabile. Dato $ A \in \mathcal{A} $, $ x \in A $ e $ n \in \N $ definiamo la frequenza media delle visite ad $ A $ dell'orbita di $ x $ da $ 0 $ a $ n $ come
+    \[
+        \nu(x, A, n) \coloneqq \frac{1}{n} \sum_{j = 0}^{n-1} \chi_A(f^{j}(x)).
+    \]
+    Definiamo inoltre
+    \begin{align*}
+        \overline{\nu}(x, A) & \coloneqq \limsup_{n \to +\infty} \nu(x, A, n) \\
+        \underline{\nu}(x, A) & \coloneqq \liminf_{n \to +\infty} \nu(x, A, n)
+    \end{align*}
+    Se $ \overline{\nu} = \underline{\nu} $ allora definiamo la frequenza media delle visite ad $ A $ dell'orbita di $ x $:
+    \[
+        \nu(x, A) \coloneqq \lim_{n \to +i\infty} \frac{1}{n} \sum_{j = 0}^{n-1} \chi_A(f^{j}(x)).
+    \]
+\end{definition}
+
+\textcolor{red}{\emph{Merge}-are i due enunciati.} \\
+
+Quest'ultima è una buona definizione in virtù del seguente
+
+\begin{thm}[Birkhoff]\label{thm:Birkhoff}
+    Sia $ (X,\mathcal{A},\mu,f) $ un sistema dinamico misurabile. Allora $ \forall A\in\mathcal{A} $ e per $ \mu $-q.o. $ x\in X $
+    \[ \exists \lim_{n \to +\infty} \nu(x,A,n) = \nu(x,A) \, . \]
+    Inoltre, $ \forall \varphi \in L^1(X,\mathcal{A},\mu) $ e per $ \mu $-q.o. $ x\in X $
+    \[ \exists \lim_{n \to +\infty} \frac{1}{n} \sum_{j=0}^{n-1} \varphi\circ f^j(x) \eqqcolon \tilde{\varphi}(x) \, . \]
+    La funzione $ \tilde{\varphi} $ viene detta \emph{media temporale} dell'osservabile $ \varphi $.
+\end{thm}
+
+\begin{thm}[Birkoff] \label{thm:Birkoff}
+    Sia $ (X, \mathcal{A}, \mu, f) $ un sistema dinamico misurabile. Allora $ \forall A \in \mathcal{A} $, per $ \mu $-q.o. $ x \in X $, $ \overline{\nu}(x, A) = \underline{\nu}(x, A) $ cioè
+    \[
+    \exists \, \lim_{n \to +\infty} \frac{1}{n} \sum_{j = 0}^{n-1} \chi_A(f^{j}(x)) \eqqcolon \nu(x, A).
+    \]
+    Inoltre $ \forall \varphi \in L^1(X, \mathcal{A}, \mu; \R) $ e per $ \mu $-q.o. $ x \in X $
+    \[
+    \exists \, \lim_{n \to +\infty} \frac{1}{n} \sum_{j=0}^{n-1} (\varphi \circ f^j)(x) \eqqcolon \tilde{\varphi}(x).
+    \]
+\end{thm}
+\begin{proof}
+    content...
+\end{proof}
+
+\begin{definition}[sistema ergodico]
+    Un sistema dinamico misurabile $ (X, \mathcal{A}, \mu, f) $ si dice ergodico se $ \forall A \in \mathcal{A} $ e per $ \mu $-q.o. $ x \in A $ vale
+    \[
+        \nu(x, A) = \mu(A)
+    \]
+    cioè se la frequenza statistica delle visite coincide con la probabilità a priori. 
+\end{definition}
+
+%
+% \section{Lezione del 20/11/2018 [Marmi]}
+%
+
+% \emph{Setting}: $ (X, \mathcal{A}, \mu, f) $ è un sistema dinamico misurabile.
+
+\begin{thm}
+    Le seguenti proprietà sono equivalenti.
+    \begin{enumerate}[label=(\roman*)]
+        \item $ (X, \mathcal{A}, \mu, f) $ è ergodico.
+        \item $ (X, \mathcal{A}, \mu, f) $ è \emph{metricamente indecomponibile} cioè $ \forall A \in \mathcal{A} : f(A) \subseteq A, \ \mu(A) \mu(X \setminus A) = 0 $, ovvero lo spazio delle fasi non può essere separato in due insiemi disgiunti $ f $-invarianti entrambi di misura non nulla.
+        \item $ (X, \mathcal{A}, \mu, f) $ ha solo integrali primi del moto banali cioè $ \forall \varphi \in \textcolor{red}{L^1}(X, \mathcal{A}, \mu; \R) : \varphi \circ f = \varphi $ $ \mu $-q.o. si ha che $ \varphi $ è costante $ \mu $-q.o. in $ X $.
+        \item $ \forall \varphi \in \textcolor{red}{L^1}(X, \mathcal{A}, \mu; \R) $ la media temporale di $ \varphi $ (che esiste per il Teorema \ref{thm:Birkhoff}) è $ \mu $-q.o. uguale alla media spaziale
+        \[
+        \lim_{n \to +\infty} \frac{1}{n} \sum_{j=0}^{n-1} (\varphi \circ f^j)(x) = \int_{X} \varphi \dif{\mu} \qquad \text{per } \mu\text{-q.o. } x \in X.
+        \]
+        \item $ \forall A, B \in \mathcal{A}, \ \displaystyle{\lim_{n \to +\infty} \frac{1}{n} \sum_{j=0}^{n-1} \mu(f^{-j}(A) \cap B) = \mu(A) \mu(B)} $ per $ \mu $-q.o. $ x \in X $, cioè il sistema dinamico è \emph{mescolante in media}.
+    \end{enumerate}
+\end{thm}
+\begin{proof}
+    Mostriamo le varie implicazioni.
+    \begin{description}
+        \item[$ (i) \Rightarrow (ii) $] Sia $ A\in\mathcal{A} : f(A) \subseteq A, \mu(A) > 0 $. Poiché $ A $ è $ f $-invariante, $ \forall x\in A\ \chi_A(f^j(x)) = 1 $ e dunque $ \nu(x,A) = 1 $ da cui, per l'ergodicità, $ \mu(A) = 1 $.
+        \item[$ (ii) \Rightarrow (iii) $]
+        \item[$ (iii) \Rightarrow (iv) $]
+        \item[$ (iv) \Rightarrow (i) $]
+        \item[$ (iv) \Rightarrow (v) $]
+        \item[$ (v) \Rightarrow (ii) $]
+    \end{description}
+\end{proof}
+
+\begin{proposition}\label{prop:rotazioni_erg}
+    La rotazione $ R_\alpha \colon \T^1 \to \T^1 $ è ergodica se e solo se $ \alpha \in \R \setminus \Q $. 
+\end{proposition}
+\begin{proof}
+    Usiamo la caratterizzazione con gli integrali primi. Prendo $ \varphi \colon \T^1 \to \R $ in \textcolor{red}{$ L^2 $} e lo sviluppo in serie di Fourier:
+    \[
+    \varphi(x) = \sum_{n \in \Z} \hat{\varphi}(n) e^{2\pi i n x}
+    \]
+    Componendola con la rotazione
+    \[
+    (\varphi \circ R_\alpha)(x) = \varphi(x + \alpha) = \sum_{n \in \Z} \hat{\varphi}(n) e^{2\pi i n \alpha} e^{2\pi i n x}.
+    \]
+    Affinché $ \varphi $ sia un integrale primo deve valere $ \hat{\varphi}(n) \left(e^{2\pi i n \alpha} - 1 \right) = 0. $ per ogni $ n \in \Z $.
+    Ora se $ \alpha \in \R \setminus \Q, \ e^{2\pi i n \alpha} \neq 1 $ per ogni $ n \neq 0 $ così $ \varphi(x) = \hat{\varphi}(0) $ cioè $ \varphi $ è costante q.o. Per mostrare l'implicazione inversa supponiamo per assurdo che $ \alpha \in \Q $ e della forma $ p/q $; allora $ e^{2\pi i n \alpha} - 1 = 0 $ per ogni $ n $ della forma $ kq $ con $ k \in \Z $ da cui possiamo trovare un integrale primo non costante contro l'ipotesi che $ R_\alpha $ fosse ergodico.
+\end{proof}
+
+\begin{exercise}\label{ex:potenze_di_due_cancro}
+    Sia $ x_j = \text{cifra più significativa di } 2^j $. Calcolare la frequenza di ciascuna cifra nella successione $ (x_j)_{j\in\N} $.
+\end{exercise}
+\begin{solution}
+    Chiamiamo $ c_n $ la cifra più significativa di $ 2^n $, cioè il numero in $ \{1, \cdots, 9\} $ tale che
+    \[ c_n \cdot 10^s \leq 2^n < (c_n+1) \cdot 10^s \]
+    dove $ s = \lfloor \log_{10} 2^n \rfloor $. Prendendo ora il logaritmo si ha $ \log_{10}c_n + s \leq n\log_{10}2 < \log_{10}(c_n+1) + s $ e quindi
+    \[ \log_{10}c_n \leq \{n\log_{10}2\} < \log_{10}(c_n+1) \]
+    Considerando ora le rotazioni $ R_{\log_{10}(2)} \colon \T^1\to\T^1 $ possiamo riscrivere $ \{ n\log_{10}2 \} = R^n_{\log_{10}(2)}(0) $;
+    se suddividiamo il toro come $ \T^1 = \sqcup_{k=1}^9 I_k $ con $ I_k = \left[\log_{10}k,\log_{10}(k+1)\right) $ la condizione che la cifra più significativa di $ 2^n $ sia $ c_n $ si traduce in
+    \[ R^n_{\log_{10}(2)}(0) \in I_c \, . \]
+    La sequenza delle potenze di 2 cercata è dunque la dinamica simbolica dell'orbita di 0 tramite la rotazione di $ \log_{10}2 $ secondo la suddetta partizione.
+    
+    Il sistema dinamico $ (\T^1, \mathcal{M}, \lambda, R_{\log_{10}(2)}) $ è ergodico per la proposizione \ref{prop:rotazioni_erg} in quanto $ \log_{10}2 $ è irrazionale; dunque la frequenza di visita dell'orbita di 0 agli intervalli $ I_k $ è uguale alla misura di Lebesgue degli intervalli stessi:
+    \[ \nu(0,I_c) = \log_{10}\left(1+\frac{1}{c}\right) \, . \]
+\end{solution}
+
+\begin{example}[successione di Kolakoski]
+    \textcolor{red}{mancante}
+\end{example}
+
+\begin{exercise}
+    Mostrare che le dilatazioni sul toro sono ergodiche.
+\end{exercise}
+\begin{solution}
+    Sia $ E_m\colon\T^1\to\T^1 $, $ E_m(x) = mx\pmod{1} $ per $ m\in\Z,\ \abs{m} \geq 2 $. Prendiamo $ \varphi\colon\T^1\to\R $ tale che $ \varphi\circ f = \varphi $; espandiamo $ \varphi $ in serie di Fourier e imponiamo che sia un integrale del moto
+    \[ \varphi(x) = \sum_{n\in\Z} \hat\varphi(x) e^{2\pi i n x} = \sum_{n\in\Z} \hat\varphi(x) e^{2\pi i n m x} = \varphi(E_m(x)) \quad \forall x\in\T^1 \]
+    Per l'ortogonalità della base di Fourier le due somme devono essere eguali termine a termine. Deve dunque valere che $ nx(1-m) = k $ per ogni $ k\in\Z $. L'equazione è banalmente verificata per $ n = 0 $. Se $ n\neq 0 $ basta prendere $ x\in\R\setminus\Q $ affinché l'equazione non sia verificata per nessun $ k\in\Z $.
+\end{solution}
+
+\begin{exercise}
+    La trasformazione $ T_\alpha(x, y) = (x+\alpha, x+y) $ è ergodica se e solo se $ \alpha \in \R \setminus \Q $.
+\end{exercise}
+
+\section{Unica ergodicità}
+
+\begin{proposition}
+    Sia $ (X, \mathcal{A}, \mu_1, f) $ un sistema ergodico e $ \mu_2 $ una misura di probabilità su $ (X, \mathcal{A}) $, $ f $-invariante. Allora i seguenti fatti sono equivalenti:
+    \begin{enumerate}[label=(\roman*)]
+        \item $ \mu_1 \neq \mu_2 $;
+        \item $ \mu_2 $ non è assolutamente continua rispetto a $ \mu_1 $, cioè $ \exists A \in \mathcal{A} $ tale che $ \mu_1(A) = 0 $ ma $ \mu_2(A) > 0 $;
+        \item $ \exists A \in \mathcal{A} $ $ f $-invariante tale che $ \mu_1(A) = 0 $ e $ \mu_2(A) > 0 $.
+    \end{enumerate}
+\end{proposition}
+
+Tale teorema stabilisce che un sistema dinamico misurabile può essere ergodico rispetto a due misure "che non si parlano". Ci sono tuttavia dei sistemi dinamici che ammettono una sola misura invariante. In tale caso si dà la seguente definizione.
+
+\begin{definition}[sistema unicamente ergodico]
+    $ (X; \mathcal{A}, \mu, f) $ si dice unicamente ergodico se esiste un'unica misura di probabilità su $ (X; \mathcal{A}) $ che sia $ f $-invariante.
+\end{definition}
+
+Tale definizione è ben posta perché un sistema unicamente ergodico è anche ergodico. Se infatti per assurdo $ (X, \mathcal{A}, \mu, f) $ non fosse ergodico esisterebbe $ A \in \mathcal{A} $ $ f $-invariante tale che $ \mu(A) > 0 $ e $ \mu(X \setminus A) > 0 $. Possiamo allora definire le misure 
+\[
+\nu_1(E) \coloneqq \frac{\mu(A \cap E)}{\mu(A)} 
+\qquad 
+\nu_2(E) \coloneqq \frac{\mu((X \setminus A) \cap E)}{\mu(X \setminus A)}
+\] 
+che sono misure di probabilità diverse e $ f $-invarianti contro l'ipotesi. Per l'invarianza basta osservare che per l'invarianza di $ \mu $ si ha
+\[
+\nu_1(f^{-1}(E)) = \frac{\mu(A \cap f^{-1}(E))}{\mu(A)} \textcolor{red}{=} \frac{\mu(f^{-1}(A) \cap f^{-1}(E))}{\mu(A)} = \frac{\mu(f^{-1}(A \cap E))}{\mu(A)} = \frac{\mu(A \cap E)}{\mu(A)} = \nu_1(E).
+\] 
+
+\begin{thm}
+    Se $ (X, \mathcal{B}, \mu, f) $, con $ X $ spazio topologico e $ \mathcal{B} $ la $ \sigma $-algebra dei boreliani, è un sistema unicamente ergodico e $ \varphi \colon X \to \R $ è continua allora si ha convergenza uniforme della media temporale dell'osservabile:
+    \[
+    \frac{1}{n} \sum_{j=0}^{n-1} (\varphi \circ f^j)(x) \, \touf \, \int_X \varphi \dif{\mu}.
+    \]
+\end{thm}
+
+\section{Iterated function systems \textcolor{red}{(mancante)}}
+
+\section{Mescolamento di un sistema dinamico misurabile \textcolor{red}{(mancante)}}
+
+\section{Schemi di Bernoulli \textcolor{red}{(mancante)}}
+
